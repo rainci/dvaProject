@@ -1,8 +1,16 @@
 import dva from 'dva';
 import './index.css';
+import 'antd/dist/antd.css';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+  initialState: {
+    products: [
+      { 'name': 'dva', 'id': 1 },
+      { 'name': 'antd', 'id': 2 }
+    ]
+  }
+});
 
 // 2. Plugins
 // app.use({});
@@ -10,6 +18,8 @@ const app = dva();
 // 3. Model
 app.model(require('./models/example').default);
 app.model(require('./models/count').default);
+app.model(require('./models/product').default);
+
 // 4. Router
 app.router(require('./router').default);
 
