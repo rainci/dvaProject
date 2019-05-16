@@ -5,7 +5,7 @@ const Products = ({ dispatch, products }) => {
   function handleDeleteFn(id){
     console.log('pageid:',id, typeof id)
     dispatch({
-      type: '/products/delete',
+      type: 'products/delete',
       payload: id
     })
   }
