@@ -3,10 +3,9 @@ import { connect } from 'dva';
 import ProductList from '../components/productList';
 const Products = ({ dispatch, products }) => {
   function handleDeleteFn(id){
-    console.log('pageid:',id, typeof id)
     dispatch({
       type: 'products/delete',
-      payload: id
+      payload: {id}
     })
   }
   return (
