@@ -23,9 +23,9 @@ export default {
         },
     },
     effects: {
-        *add(action, {call, put}){
+        *addE(action, {call, put}){
             yield call(delay,1000);
-            yield put({ type: 'minus' })
+            yield put({ type: 'add' })
         },
     },    
 }

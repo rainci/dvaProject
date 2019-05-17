@@ -16,6 +16,7 @@ class TestError extends React.Component {
         <div>
           <TestError />
           <h2>{ count }</h2>
+          <button key="addE" onClick={() => { dispatch({type: 'count/addE'})}}>+E</button>
           <button key="add" onClick={() => { dispatch({type: 'count/add'})}}>+</button>
           <button key="minus" onClick={() => { dispatch({type: 'count/minus'})}}>-</button>
         </div>
