@@ -54,7 +54,7 @@ function UsersPage ({dispatch,...userProps}){
 const mapStateToProps = (state) => {
   const { list, total, page } = state.users;
   return {
-    // loading: state.loading.models.users,
+    loading: state.loading.models.users,
     dataSource:list,
     total,
     current:page,
