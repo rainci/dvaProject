@@ -11,7 +11,7 @@ class TestError extends React.Component {
       return <div>TestError</div>
     }
   }
-  const CountPage = ({dispatch,count:{count}}) => {
+  const CountPage = ({dispatch,count}) => {
     return (
         <div>
           <TestError />

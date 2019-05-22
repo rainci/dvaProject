@@ -5,21 +5,13 @@ function delay(timeout){
 }
 export default {
     namespace: 'count',
-    state: {
-        count: 0,
-    },
+    state: 0,
     reducers: {
         add(state) { 
-            return {
-                ...state,
-                count: state.count + 1,
-            }
+            return state + 1;
         },
         minus(state) { 
-            return {
-                ...state,
-                count: state.count - 1,
-            }    
+            return state - 1;
         },
     },
     effects: {
