@@ -3,7 +3,7 @@ import * as usersService from '../services/users';
 export default {
   namespace: 'users',
   state: {
-    list: [{name:123}],
+    list: [{name:123,id:1}],
     total: null,
   },
   reducers: {
@@ -15,7 +15,7 @@ export default {
     *fetch({ payload }, { call, put }) {
       const { page } = payload || {};
       const resault = yield call(usersService.fetch, { page });
-      console.log(resault);
+      console.log('result:',resault);
       const { data, headers } = resault
       yield put({type:'save',payload:{data, total: headers['x-total-count']}})
     },

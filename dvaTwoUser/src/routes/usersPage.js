@@ -4,7 +4,7 @@ import { Table, Pagination, Popconfirm, Button } from 'antd';
 import Users from '../components/users'
 
 
-function UsersPage ({dispatch,...userProps}){
+function UsersPage ({dispatch,loading,...userProps}){
   // console.log('sor',dataSource)
   const deleteHandler = id => {
     dispatch({
@@ -44,17 +44,19 @@ function UsersPage ({dispatch,...userProps}){
     ),
   },
 ];
+const isLoading = loading.effects['users/fetch']//增加loading
   return (
     <Users
       columns={columns}
+      loading={isLoading}
       {...userProps}
     /> 
   )
 }
-const mapStateToProps = (state) => {
-  const { list, total, page } = state.users;
+const mapStateToProps = ({users, loading}) => {
+  const { list, total, page } = users;
   return {
-    loading: state.loading.models.users,
+    loading,
     dataSource:list,
     total,
     current:page,
