@@ -1,6 +1,6 @@
 import dva from 'dva';
 import createLoading from 'dva-loading';
-import { createHistory } from 'dva/router';
+import createHistory from 'history/createBrowserHistory';
 import { message } from 'antd';
 import 'antd/dist/antd.css';
 import './index.css';
