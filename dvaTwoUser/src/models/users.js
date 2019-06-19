@@ -12,7 +12,7 @@ export default {
     },
   },
   effects: {
-    *fetch({ payload }, { call, put }) {
+    *fetchData({ payload }, { call, put }) {
       const { page } = payload || {};
       const resault = yield call(usersService.fetch, { page });
       console.log('result:',resault);
@@ -22,12 +22,12 @@ export default {
     *remove({ payload: id }, { call, put, select }) {
       yield call(usersService.remove, id);
       const page = yield select(state => state.users.page);
-      yield put({ type: 'fetch', payload: { page } });
+      yield put({ type: 'fetchData', payload: { page:1 } });
     },
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      dispatch({ type: 'fetch' });
+      dispatch({ type: 'fetchData',payload:{page:1} });
     },
   },
 };

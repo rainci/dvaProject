@@ -44,7 +44,7 @@ function UsersPage ({dispatch,loading,...userProps}){
     ),
   },
 ];
-const isLoading = loading.effects['users/fetch']//增加loading
+const isLoading = loading.effects['users/fetchData']//增加loading
   return (
     <Users
       columns={columns}
