@@ -1,14 +1,23 @@
 import dva from 'dva';
-import './index.css';
+import createLoading from 'dva-loading';
+import createHistory from 'history/createBrowserHistory';
+import { message } from 'antd';
+import styles from './index.css';
+const ERROR_MSG_DURATION = 3; // 3 秒
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+    history: createHistory(),
+    onError(e) {
+        message.error(e.message, ERROR_MSG_DURATION);
+    }
+});
 
 // 2. Plugins
-// app.use({});
+app.use(createLoading());//add loading
 
 // 3. Model
-// app.model(require('./models/example').default);
+app.model(require('./models/loginPage').default);
 
 // 4. Router
 app.router(require('./router').default);
