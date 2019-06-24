@@ -15,7 +15,7 @@ class LoginPage extends React.PureComponent {
                 console.log(values)
                 let { userName, password } = values;
                 if (userName === 'xixi' && password === '11111111') {
-                    this.props.dispatch({type:'fetchLogin',payload: {userName,password}})
+                    this.props.dispatch({type:'loginPage/fetchLogin',payload: {userName,password}})
                     // this.props.history.push('/main') 
                 }
             }

@@ -14,7 +14,8 @@ export default {
         *fetchLogin({ payload }, { call, put }){
             const { userName, password } = payload || {};  
             const result = yield call(server.loginFn, {userName,password})
-            const {data , code } = result;
+            console.log('result:',result)
+            const {data: {data , code} } = result;
             if(code === 200){
                 yield put({type:'login',payload:{data}}) 
             }
