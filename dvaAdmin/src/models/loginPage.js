@@ -3,7 +3,7 @@ export default {
     namespace: 'loginPage',
     state: {},
     reducers: {
-        login(state,{payload: {data }}){
+        login(state,{payload: { data }={} }){
             return {
                 ...state,
                 ...data,
@@ -13,11 +13,10 @@ export default {
     effects: {
         *fetchLogin({ payload }, { call, put }){
             const { userName, password } = payload || {};  
-            const result = yield call(server.loginFn, {userName,password})
+            const result = yield call(server.loginFn, {userName,password})//call异步
             console.log('result:',result)
-            const {data: {data , code} } = result;
-            if(code === 200){
-                yield put({type:'login',payload:{data}}) 
+            if(result.data && result.data.code === 200){
+                yield put({type:'login',payload:result.data})//同步
             }
         }
     },

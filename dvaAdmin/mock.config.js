@@ -1,5 +1,5 @@
 module.exports = {
     ['/login'](req, res) {
-        res.json({ data: { username: 'admin', password: '11111111' }, code: 200 });
+        res.json({data:{ userName: 'admin', password: '111111', token: '123abc' }, code: 200 });
     },
 }

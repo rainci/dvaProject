@@ -4,7 +4,6 @@
     "start": "roadhog server",
     "build": "roadhog build",
     "lint": "eslint --ext .js src test",
-    "precommit": "npm run lint",
     "mock": "mockjs-server --port=9999"
   },
   "dependencies": {
