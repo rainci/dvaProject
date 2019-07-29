@@ -11,4 +11,12 @@
   ]
 } -->
 
+#增加mockjs 
+#npm install mockjs-server-cli
+#project-root
+#+ |- mock.config.js
+#Running commands
+#mockjs-server
+#在package.json中增加在script中"mock": "mockjs-server --port=9999"
+
 
