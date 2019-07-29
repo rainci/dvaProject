@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { connect } from 'dva';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import styles from './index.less'
 import { setList } from '../../utils'
 const FormItem = Form.Item;
@@ -27,11 +27,16 @@ class LoginPage extends React.PureComponent {
                 let { userName, password } = values;
                 if (userName === 'xixi' && password === '111111') {
                     this.props.dispatch({type:'loginPage/fetchLogin',payload: {userName,password}})
-                    setTimeout(()=>{
+                    .then(()=> {
                         setList('userInfo', { userName:this.props.userName, token: this.props.token})
-                        this.props.history.push('/main') 
-                    },3000)
+                        this.props.history.push('/main')
+                    })
+                    .catch(err =>  {
+                        message.warn(err)
+                    })
                     
+                }else{
+                    message.warn('用户名或密码不正确')
                 }
             }
         })

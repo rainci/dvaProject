@@ -1,9 +1,11 @@
 import React from "react";
-import { Menu, Dropdown, Icon } from 'antd';
+import { Menu, Dropdown, Icon, message } from 'antd';
 import {Link} from 'react-router-dom';
 
 const UserInfo = ({ userName }) => {
     const _logOut = (e) => {
+        sessionStorage.clear();
+        message.success('退出成功！', 2);
         // serverlogin.logOut()
         // .then(db=>{
         //     if(db.code === '200'){
@@ -13,6 +15,7 @@ const UserInfo = ({ userName }) => {
         //         alert(db.msg)
         //     }    
         // })
+
     }
     const menu = (
         <Menu>
