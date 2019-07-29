@@ -1,6 +1,6 @@
 import * as server from '../services/server';
 export default {
-    namespace: 'loginPage',
+    namespace: 'tenantPage',
     state: {},
     reducers: {
         login(state,{payload: { data }={} }){

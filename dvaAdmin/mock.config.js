@@ -1,6 +1,5 @@
 module.exports = {
     ['/login'](req, res) {
-        // console.log(1111,req)
-        res.json({ data: { username: 'xixi', password: '11111111' }, code: 200 });
+        res.json({data:{ userName: 'admin', password: '111111', token: '123abc' }, code: 200 });
     },
 }

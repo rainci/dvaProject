@@ -1,27 +1,54 @@
+/**
+ * @author rainci
+ */
 import * as React from 'react'
 import { connect } from 'dva';
-import { Form, Icon, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import styles from './index.less'
+import { setList } from '../../utils'
 const FormItem = Form.Item;
 
 class LoginPage extends React.PureComponent {
-    constructor(props) {
-        super(props)
-        this.state = {}
+    state={
+
     }
+    /***********公共方法 begin *****************/
+    setStateValueFn = (key, value) => {//设置state值
+        this.setState({
+            [key]: value
+        })
+    }
+    /***********公共方法 end *****************/
+    /***************************页面业务逻辑 begin ******************************/
     loginSubmit = () => {//登录按钮
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
                 let { userName, password } = values;
-                if (userName === 'xixi' && password === '11111111') {
+                if (userName === 'xixi' && password === '111111') {
                     this.props.dispatch({type:'loginPage/fetchLogin',payload: {userName,password}})
-                    this.props.history.push('/main') 
+                    .then(()=> {
+                        setList('userInfo', { userName:this.props.userName, token: this.props.token})
+                        this.props.history.push('/main')
+                    })
+                    .catch(err =>  {
+                        message.warn(err)
+                    })
+                    
+                }else{
+                    message.warn('用户名或密码不正确')
                 }
             }
         })
 
     }
+    /***************************页面业务逻辑 end ******************************/
+    /***************************生命周期 begin *******************************/
+    componentDidMount() {
+        
+    }
+    /***************************生命周期 end *******************************/
+    
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -39,6 +66,8 @@ class LoginPage extends React.PureComponent {
                     <Form className="login-form">
                         <FormItem>
                             {getFieldDecorator('userName', {
+                                validateTrigger: "onBlur",
+                                validateFirst: true,
                                 rules: [{ required: true, message: '请输入帐号!' }],
                             })(
                                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
@@ -46,11 +75,12 @@ class LoginPage extends React.PureComponent {
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('password', {
+                                validateTrigger: "onBlur",
+                                validateFirst: true,
                                 rules: [
                                     { required: true, message: '请输入密码!' },
-                                    { min: 8, max: 20, message: '密码长度限制在8到20位' },
+                                    { min: 6, max: 20, message: '密码长度限制在8到20位' },
                                 ],
-                                validateTrigger: 'onBlur'
                             })(
                                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                             )}
@@ -70,11 +100,12 @@ class LoginPage extends React.PureComponent {
     }
 }
 const mapStateToProps = ({ loginPage, loading }) => {
-    const { userName, password } = loginPage;
+    const { userName, token } = loginPage;
+    console.log(111,loginPage,userName,token )
     return {
         loading,
         userName,
-        password,
+        token,
     };
 }
 export default connect(mapStateToProps)(Form.create()(LoginPage));
