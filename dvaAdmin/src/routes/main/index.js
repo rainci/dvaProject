@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { Layout, } from 'antd';
 import {  Route } from 'react-router-dom';
 import MyHeader from '../../components/header'
 import MainIndex from './helloMain'
-
+import TenantList from '../user/tenantList'
 const { Content, Sider } = Layout;
 
 const Main = () => {
@@ -15,8 +15,10 @@ const Main = () => {
                         {/* <MyMenu /> */}
                     </Sider>
                     <Content style={{ padding: '10px' }}>
-                        <div style={{ background: '#fff', padding: 24, height:"100%",overflow:"auto" }}>
-                            <Route path="/main" component={MainIndex} exact/>
+                        <div style={{ background: '#fff', padding: 24, height:'100%',overflow:'auto' }}>
+                            <Route path='/main' component={MainIndex} exact/>
+                            <Route path='/main/tenantList' component={TenantList} />
+
                         </div>
                     </Content>
                 </Layout>

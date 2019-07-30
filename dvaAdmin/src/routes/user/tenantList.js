@@ -3,8 +3,10 @@
  */
 import React, { PureComponent } from "react";
 import { Table, Form, Input, Row, Col, Button, message, Popconfirm } from 'antd';
-import MainHeader from '../../components/mainHeader/mainHeader'
+import BreadCrumbs from '../../components/breadCrumb'
 import { Link } from 'react-router-dom';
+import { connect } from 'dva';
+
 const FormItem = Form.Item;
 export const formItemLayout = {
     labelCol: {
@@ -31,28 +33,28 @@ class TenantList extends PureComponent {
             [key]: value
         })
     }
-    getTenantData = (filter, page) => {//获取tenant data
-        return serverLogin.getTenantList(filter, page).then(({ code, data = {}, msg }) => {
-            if (code === '200' || code === 200) {
-                return data;
-            } else {
-                message.warn(`获取租户列表失败:${msg}`)
-            }
-        }).catch((err) => {
-            console.log('租户列表失败:', err)
-        })
-    }
-    getDeleteTenantData = id => {//删除tenant
-        return serverLogin.deleteTenant(id).then(({ code, msg }) => {
-            if (code === '200' || code === 200) {
-                return code
-            } else {
-                message.warn(`删除租户失败:${msg}`)
-            }
-        }).catch((err) => {
-            console.log('删除租户失败:', err)
-        })
-    }
+    // getTenantData = (filter, page) => {//获取tenant data
+    //     return serverLogin.getTenantList(filter, page).then(({ code, data = {}, msg }) => {
+    //         if (code === '200' || code === 200) {
+    //             return data;
+    //         } else {
+    //             message.warn(`获取租户列表失败:${msg}`)
+    //         }
+    //     }).catch((err) => {
+    //         console.log('租户列表失败:', err)
+    //     })
+    // }
+    // getDeleteTenantData = id => {//删除tenant
+    //     return serverLogin.deleteTenant(id).then(({ code, msg }) => {
+    //         if (code === '200' || code === 200) {
+    //             return code
+    //         } else {
+    //             message.warn(`删除租户失败:${msg}`)
+    //         }
+    //     }).catch((err) => {
+    //         console.log('删除租户失败:', err)
+    //     })
+    // }
     /***********公共方法 end *****************/
     /***************************页面业务逻辑 begin ******************************/
     searchTenantListBtn = (filter, page) => {
@@ -94,7 +96,7 @@ class TenantList extends PureComponent {
     /***************************页面业务逻辑 end ******************************/
     /***************************生命周期 begin *******************************/
     componentDidMount() {
-        this.searchTenantFn()
+        // this.searchTenantFn()
     }
     /***************************生命周期 end *******************************/
     render() {
@@ -125,7 +127,7 @@ class TenantList extends PureComponent {
                             title="确定要删除租户吗？" 
                             okText="Yes" 
                             cancelText="No"
-                            onConfirm={this.deleteTenantFn.bind(this,tenantId,data.userCount)}
+                            // onConfirm={this.deleteTenantFn.bind(this,tenantId,data.userCount)}
                             >
                                 <span className='tenantDel'>删除</span>
                             </Popconfirm>
@@ -136,7 +138,7 @@ class TenantList extends PureComponent {
         ];
         return (
             <div>
-                <MainHeader to='/main/addTenant' a='新建租户' name='租户管理' root='账号中心' />
+                <BreadCrumbs goUrl='/main/addTenant' goName='新建租户' name='租户管理' rootName='账号中心' />
                 <Form onSubmit={this.searchTenantFn} >
                     <Row>
                         <Col span={10} style={{ padding: "0 8px" }}>
@@ -182,7 +184,7 @@ class TenantList extends PureComponent {
 
 const mapStateToProps = ({ tenantPage, loading }) => {
     const { userName, token } = tenantPage;
-    console.log(111,loginPage,userName,token )
+    console.log(111,tenantPage,userName,token )
     return {
         loading,
         userName,
