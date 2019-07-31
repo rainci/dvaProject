@@ -16,25 +16,26 @@ export default {
 		}
 	},
 	effects: {
-		*fetchLogin({ payload }, { call, put }) {
+		*fetchLogin({ payload }, { call, put, select }) {
 			try {
 				const { userName, password } = payload;
 				const result = yield call(server.loginFn, { userName, password })//call异步
-				
+
 				const isSuccess = result.data && result.data.code === 200;
-				console.log('result:',result, isSuccess)
+				console.log('result:', result, isSuccess)
 				if (isSuccess) {
-					
+
 					yield put({ type: 'login', payload: result.data })//同步
-					console.log(222)
+					yield select(({ loginPage: { userName, token } } = { loginPage: {} }) => {
+						setList('userInfo', { userName, token })
+					});
 					// yield put( routerRedux.push('/main') ); // 路由跳转
 					// console.log(555,this.userName,this.token)
-					setList('userInfo', { userName: '123' })
 					yield put(routerRedux.push({//路由跳转
-						pathname:'/main',
+						pathname: '/main',
 						search: queryString.stringify({
 							from: 'pro',
-							to:'main',
+							to: 'main',
 						})
 					}))
 				} else {
