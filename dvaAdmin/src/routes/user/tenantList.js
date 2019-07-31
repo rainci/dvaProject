@@ -138,7 +138,7 @@ class TenantList extends PureComponent {
         ];
         return (
             <div>
-                <BreadCrumbs goUrl='/main/addTenant' goName='新建租户' name='租户管理' rootName='账号中心' />
+                {/* <BreadCrumbs goUrl='/main/addTenant' goName='新建租户' name='租户管理' rootName='账号中心' />
                 <Form onSubmit={this.searchTenantFn} >
                     <Row>
                         <Col span={10} style={{ padding: "0 8px" }}>
@@ -176,7 +176,8 @@ class TenantList extends PureComponent {
                             return '共 ' + this.total + ' 条数据';
                         }
                     }}
-                />
+                /> */}
+                tenant page!
             </div>
         )
     }

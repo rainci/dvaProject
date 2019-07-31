@@ -12,12 +12,13 @@ const Main = () => {
                 <MyHeader />
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>
+                     left Sider!
                         {/* <MyMenu /> */}
                     </Sider>
                     <Content style={{ padding: '10px' }}>
                         <div style={{ background: '#fff', padding: 24, height:'100%',overflow:'auto' }}>
                             <Route path='/main' component={MainIndex} exact/>
-                            <Route path='/main/tenantList' component={TenantList} />
+                            <Route path='/tenantList'  component={TenantList} />
 
                         </div>
                     </Content>
