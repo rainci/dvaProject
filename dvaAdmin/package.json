@@ -12,6 +12,7 @@
     "dva": "^2.4.1",
     "dva-loading": "^3.0.6",
     "mockjs-server-cli": "^1.2.0",
+    "query-string": "^6.8.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },

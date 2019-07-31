@@ -35,7 +35,7 @@ class LoginPage extends React.PureComponent {
 								return;
 							}
 							setList('userInfo', { userName: this.props.userName, token: this.props.token })
-							this.props.history.push('/main')
+							// this.props.history.push('/main')
 						})
 
 				} else {

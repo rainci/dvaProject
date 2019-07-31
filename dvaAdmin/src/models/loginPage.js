@@ -1,6 +1,7 @@
 import * as server from '../services/server';
 import { message } from 'antd';
-
+import { routerRedux } from 'dva/router';//路由跳转
+import queryString from 'query-string';//url参数
 export default {
 	namespace: 'loginPage',
 	state: {},
@@ -20,6 +21,14 @@ export default {
 				const isSuccess = result.data && result.data.code === 200;
 				if (isSuccess) {
 					yield put({ type: 'login', payload: result.data })//同步
+					// yield put( routerRedux.push('/main') ); // 路由跳转
+					yield put(routerRedux.push({//路由跳转
+						pathname:'/main',
+						search: queryString.stringify({
+							from: 'pro',
+							to:'main',
+						})
+					}))
 				} else {
 					message.warn(result.message);
 				}
