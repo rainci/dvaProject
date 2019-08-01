@@ -25,8 +25,8 @@ export default {
 				console.log('result:', result, isSuccess)
 				if (isSuccess) {
 
-					yield put({ type: 'login', payload: result.data })//同步
-					yield select(({ loginPage: { userName, token } } = { loginPage: {} }) => {
+					yield put({ type: 'login', payload: result.data })//put同步
+					yield select(({ loginPage: { userName, token } } = { loginPage: {} }) => {//从state中取值
 						setList('userInfo', { userName, token })
 					});
 					// yield put( routerRedux.push('/main') ); // 路由跳转
