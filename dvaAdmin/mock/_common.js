@@ -5,6 +5,6 @@
 exports.Mock = require('mockjs');
 
 exports.defaultResult = {
-  message: 'success',
+  msg: 'success',
   code: 200, // code 200 是成功
 }
