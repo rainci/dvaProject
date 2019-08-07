@@ -13,7 +13,6 @@ const Main = () => {
                 <MyHeader />
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>
-                     left Sider!
                         <MyMenu />
                     </Sider>
                     <Content style={{ padding: '10px' }}>
