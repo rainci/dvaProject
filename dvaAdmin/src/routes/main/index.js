@@ -4,6 +4,7 @@ import {  Route } from 'react-router-dom';
 import MyHeader from '../../components/header'
 import MainIndex from './helloMain'
 import TenantList from '../user/tenantList'
+import MyMenu from '../../components/sideMenu'
 const { Content, Sider } = Layout;
 
 const Main = () => {
@@ -13,7 +14,7 @@ const Main = () => {
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>
                      left Sider!
-                        {/* <MyMenu /> */}
+                        <MyMenu />
                     </Sider>
                     <Content style={{ padding: '10px' }}>
                         <div style={{ background: '#fff', padding: 24, height:'100%',overflow:'auto' }}>

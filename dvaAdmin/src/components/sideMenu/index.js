@@ -1,7 +1,9 @@
 import React from 'react';
 import { Menu, Icon, Button } from 'antd';
-import {Link,withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import * as TOOLS from '../../utils';
+import styles from './css/index.less'
+
 const SubMenu = Menu.SubMenu;
 
 class MyMenu extends React.Component {
@@ -11,18 +13,39 @@ class MyMenu extends React.Component {
 
   handleClick = e => {
     let SelectedKey = {
-      key:e.key
+      key: e.key
     }
-    TOOLS.setList('SelectedKey',SelectedKey)
+    TOOLS.setList('SelectedKey', SelectedKey)
   }
-  renderHtml = data => {//渲染menu
-    data.map(({id, sub, list = []}) => {
-      
+  renderMenuHtml = (data = []) => {//渲染menu
+    let _this = this
+    return data.map(({ id, sub: { type, url, title, icon }, list = [] }) => {
+      if (type === 'title' && list && list.length) {
+        return (
+          <SubMenu key={id} title={<span>{icon ? <Icon type={icon} /> : null}{title}</span>}>
+            {_this.renderMenuHtml(list)}
+          </SubMenu>
+        )
+      }
+      if (type === 'menu') {
+        // if (list && list.length) {
+        //   return (
+        //     <SubMenu key={id} title={title}>
+        //       {_this.renderMenuHtml(list)}
+        //     </SubMenu>
+        //   )
+        // }
+        return <Menu.Item key={id}><Link to={url}>{title}</Link></Menu.Item>
+      }
+      return null
     })
   }
   /****************生命周期begin ****************/
-  componentDidMount(){
-    this.subNav = TOOLS.getList('subNav') || [];
+  componentDidMount() {
+    this.setState({
+      subNav: TOOLS.getList('subNav') || []
+    })
+    console.log('state.subNav:', this.state.subNav)
   }
   /****************生命周期end ****************/
 
@@ -34,7 +57,6 @@ class MyMenu extends React.Component {
     //   }
     // })
     // const SelectedKey = TOOLS.getList('SelectedKey');
-    const pathname = this.props.location.pathname;
     //console.log(this.props)
     // var selectedKeys = pathname || "";
     const menuProps = {
@@ -43,41 +65,16 @@ class MyMenu extends React.Component {
       // selectedKeys:[selectedKeys],
       theme: "dark",
       mode: "inline",
-      onClick:this.handleClick,
+      onClick: this.handleClick,
       collapsed: this.state.collapsed
     }
     return (
-      <div className='sideMenu'>
+      <div className={styles.sideMenu}>
         <Menu
           {...menuProps}
         >
           {
-            menuList.map(item => {
-              const { id, sub, list = [] } = item;
-              return (
-                <SubMenu key={id} title={<span>{sub.icon ? <Icon type={sub.icon} /> : null}{sub.title}</span>}>
-                  {
-                    list.map(({ id,list, sub }) => {
-                      if(sub.type != "interface"){
-                        if(sub.type == "menu" || list.length == "0"){  
-                          return <Menu.Item key={sub.url}><Link to={sub.url}>{sub.title}</Link></Menu.Item>
-                        }else{
-                          return <SubMenu key={id} title={sub.title}>
-                            {
-                              list.map(({ id,sub }) => {
-                                if(sub.type != "interface"){
-                                  return <Menu.Item key={sub.url}><Link to={sub.url}>{sub.title}</Link></Menu.Item>
-                                }
-                              })
-                            }
-                          </SubMenu>
-                        }
-                      }  
-                    })
-                  }
-                </SubMenu>
-              )
-            })
+            this.renderMenuHtml(this.state.subNav)
           }
         </Menu>
       </div>
