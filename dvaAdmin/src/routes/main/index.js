@@ -7,7 +7,7 @@ import TenantList from '../user/tenantList'
 import MyMenu from '../../components/sideMenu'
 const { Content, Sider } = Layout;
 
-const Main = () => {
+const Main = (props) => {
         return(
             <Layout>
                 <MyHeader />
@@ -17,9 +17,9 @@ const Main = () => {
                     </Sider>
                     <Content style={{ padding: '10px' }}>
                         <div style={{ background: '#fff', padding: 24, height:'100%',overflow:'auto' }}>
-                            <Route path='/main' component={MainIndex} exact/>
-                            <Route path='/tenantList'  component={TenantList} />
-
+                            {props.children}
+                            {/* <Route path='/tenantList'  component={TenantList} exact />
+                            <Route path='/main' component={MainIndex} /> */}
                         </div>
                     </Content>
                 </Layout>

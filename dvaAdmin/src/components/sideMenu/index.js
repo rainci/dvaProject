@@ -60,7 +60,7 @@ class MyMenu extends React.Component {
     //console.log(this.props)
     // var selectedKeys = pathname || "";
     const menuProps = {
-      // defaultOpenKeys,
+      defaultOpenKeys:['10401'],
       // defaultSelectedKeys: [SelectedKey.key?SelectedKey.key + '':"120300"],
       // selectedKeys:[selectedKeys],
       theme: "dark",
