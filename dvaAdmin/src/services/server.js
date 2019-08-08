@@ -7,3 +7,10 @@ export function loginFn({userName,password}){
         params: {userName,password},
     })
 }
+export function tenantListFn(filter,page=1){
+    return request(`${api}/tenantList`,{
+        // return request(`${api}/login?userName=${userName}&password=${password}`,{
+        method: 'get',
+        params: {...filter,page,row:10},
+    })
+}
