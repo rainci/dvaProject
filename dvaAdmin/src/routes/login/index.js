@@ -5,7 +5,7 @@ import * as React from 'react'
 import { connect } from 'dva';
 import { Form, Icon, Input, Button, message } from 'antd';
 import styles from './index.less'
-import { setList } from '../../utils'
+// import { setList } from '../../utils'
 const FormItem = Form.Item;
 
 class LoginPage extends React.PureComponent {

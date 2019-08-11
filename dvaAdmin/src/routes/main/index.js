@@ -1,15 +1,16 @@
 import React from 'react';
 import { Layout, } from 'antd';
-import {  Route } from 'react-router-dom';
+// import {  Route } from 'react-router-dom';
 import MyHeader from '../../components/header'
-import MainIndex from './helloMain'
-import TenantList from '../user/tenantList'
+// import MainIndex from './helloMain'
+// import TenantList from '../user/tenantList'
 import MyMenu from '../../components/sideMenu'
+import styles from './css/index.less'
 const { Content, Sider } = Layout;
 
 const Main = (props) => {
         return(
-            <Layout>
+            <Layout className={styles.mainBox}>
                 <MyHeader />
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>

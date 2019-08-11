@@ -1,8 +1,8 @@
 import * as server from '../services/server';
-import { message } from 'antd';
-import { routerRedux } from 'dva/router';//路由跳转
-import queryString from 'query-string';//url参数
-import { setList, avoidData, dealMenuData } from '../utils'
+// import { message } from 'antd';
+// import { routerRedux } from 'dva/router';//路由跳转
+// import queryString from 'query-string';//url参数
+// import { setList, avoidData, dealMenuData } from '../utils'
 export default {
     namespace: 'tenantPage',
     state: {},
@@ -17,7 +17,7 @@ export default {
     effects: {
         *fetchTenantList({ payload }, { call, put }){
             const { name } = payload || {};  
-            const {data:{code,msg,data:result}} = yield call(server.tenantListFn, {name})//call异步
+            const {data:{code,data:result}} = yield call(server.tenantListFn, {name})//call异步
             console.log('result:',result)
             if(code === 200){
                 yield put({type:'tenantList',payload:result})//同步
