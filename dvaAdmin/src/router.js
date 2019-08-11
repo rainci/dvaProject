@@ -4,6 +4,7 @@ import LoginPage from './routes/login'
 import Main from './routes/main/index.js'
 import TenantList from './routes/user/tenantList'
 import MainIndex from './routes/main/helloMain'
+import { routesConfig } from '../config/routerConfig'
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
@@ -12,7 +13,7 @@ function RouterConfig({ history }) {
         {/* <Route path='/main' component={Main} /> */}
         <Main>
           <Route exact path="/main" component={MainIndex} />
-          <Route path="/main/tenantList" component={TenantList} />
+          <Route  path={routesConfig.tenant} component={TenantList} />
         </Main>
       </Switch>
     </Router>

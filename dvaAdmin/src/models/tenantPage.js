@@ -7,20 +7,19 @@ export default {
     namespace: 'tenantPage',
     state: {},
     reducers: {
-        tenantList(state,{ payload }){
+        setTenantList(state,{ payload }){
             return {
                 ...state,
-                data:payload,
+                ...payload,
             }
         }
     },
     effects: {
-        *fetchTenantList({ payload }, { call, put }){
-            const { name } = payload || {};  
-            const {data:{code,data:result}} = yield call(server.tenantListFn, {name})//call异步
+        *fetchTenantList({ payload={} }, { call, put }){
+            const {data:{code,data:result,totalNum}} = yield call(server.tenantListFn, payload)//call异步
             console.log('result:',result)
             if(code === 200){
-                yield put({type:'tenantList',payload:result})//同步
+                yield put({type:'setTenantList',payload:{result,totalNum}})//同步
             }
         }
     },
@@ -28,7 +27,7 @@ export default {
         setup({ dispatch, history }) {
             history.listen(( {pathname} ) => {
                 console.log(pathname)
-                if(pathname === '/main/tenantList'){
+                if(pathname === '/tenantList'){
                     dispatch({type:'fetchTenantList'})
                 }
             })

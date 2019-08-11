@@ -22,8 +22,8 @@ class TenantList extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            tenantListData: [],//列表数据
-            tenantListPage: 0,//列表总数
+            // tenantListData: [],//列表数据
+            // tenantListPage: 0,//列表总数
             tenantFliter: {},//filter
         }
     }
@@ -58,13 +58,12 @@ class TenantList extends PureComponent {
     /***********公共方法 end *****************/
     /***************************页面业务逻辑 begin ******************************/
     searchTenantListBtn = (filter, page) => {
-        this.setStateValueFn('resourceLoad', true)
-        this.getTenantData(filter, page)
-            .then(({ list, total } = {}) => {
-                this.setStateValueFn('resourceLoad', false)
-                this.setStateValueFn('tenantListData', list)
-                this.setStateValueFn('tenantListPage', total)
-            })
+        this.props.dispatch({type:'tenantPage/fetchTenantList',payload:{filter,page}})
+        // this.getTenantData(filter, page)
+        //     .then(({ list, total } = {}) => {
+        //         this.setStateValueFn('tenantListData', list)
+        //         this.setStateValueFn('tenantListPage', total)
+        //     })
     }
     searchTenantFn = e => {//搜索
         e && e.preventDefault()
@@ -74,19 +73,19 @@ class TenantList extends PureComponent {
             _this.searchTenantListBtn(filter)
         })
     }
-    deleteTenantFn = (id, userCount) => {//删除
-        if(userCount){//如果有成员，则不能删除 
-            return message.warn('租户不允许删除')
-        }
-        this.getDeleteTenantData(id)
-            .then(code => {
-                if(code === ('200' || 200)){
-                    message.info('租户删除成功',1,()=>{
-                        this.searchTenantFn()
-                    })
-                }
-            })
-    }
+    // deleteTenantFn = (id, userCount) => {//删除
+    //     if(userCount){//如果有成员，则不能删除 
+    //         return message.warn('租户不允许删除')
+    //     }
+    //     this.getDeleteTenantData(id)
+    //         .then(code => {
+    //             if(code === ('200' || 200)){
+    //                 message.info('租户删除成功',1,()=>{
+    //                     this.searchTenantFn()
+    //                 })
+    //             }
+    //         })
+    // }
     handleReset = () => {//重置
         this.props.form.resetFields();
     }
@@ -100,6 +99,7 @@ class TenantList extends PureComponent {
     }
     /***************************生命周期 end *******************************/
     render() {
+        const { result, totalNum } = this.props || {};//从redux中拿list data 和list totalNum
         const { getFieldDecorator } = this.props.form;
         const columns = [
             {
@@ -148,7 +148,7 @@ class TenantList extends PureComponent {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem>
                                 <Button type="primary" htmlType="submit">
                                     搜索
@@ -162,10 +162,10 @@ class TenantList extends PureComponent {
                 </Form>
                 <Table
                     columns={columns}
-                    dataSource={this.props.data}
+                    dataSource={result}
                     rowKey={record => record.tenantId}
                     pagination={{  //分页
-                        total: this.state.tenantListPage, //数据总数量
+                        total: totalNum*1, //数据总数量
                         //pageSize: this.state.userListPage,  //显示几条一页
                         defaultPageSize: 10, //默认显示几条一页
                         onShowSizeChange(current, pageSize) {  //当几条一页的值改变后调用函数，current：改变显示条数时当前数据所在页；pageSize:改变后的一页显示条数
@@ -174,20 +174,21 @@ class TenantList extends PureComponent {
                         onChange: this.onPaginationChange,
                         showTotal: function () {  //设置显示一共几条数据
                             return '共 ' + this.total + ' 条数据';
-                        }
+                        },
+                        hideOnSinglePage: true,
                     }}
                 />
-                tenant page!
+                panent page !
             </div>
         )
     }
 }
 
-const mapStateToProps = ({ tenantPage:{data}, loading }) => {
+const mapStateToProps = ({ tenantPage, loading }) => {
     // console.log(111,tenantPage )
     return {
         loading,
-        data,
+        ...tenantPage,
     };
 }
 export default connect(mapStateToProps)(Form.create()(TenantList));

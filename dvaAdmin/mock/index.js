@@ -1,6 +1,49 @@
-const { defaultResult, Mock } = require('./_common')
+const { defaultResult, Mock } = require('./_common');
+const fs  = require('fs');
+const path  = require('path');
+let a = fs.readFileSync(path.join(__dirname, '..', 'config', 'routerConfig.js'), 'utf8');
 
-function getTenantList(count = 10) {
+function getRoutesConfig(str) {
+  const sign = 'routesConfig';
+  const index = str.indexOf(sign);
+
+  let result = '';
+  let end = 0;
+  let start = 0;
+
+  for (const [i, s] of str.split('').entries()) {
+    if ((end && i > end) || i < index) {
+      continue;
+    }
+    if (s === '{') {
+      start = i;
+    }
+    if (start && i >= start) {
+      result += s;
+    }
+    if (s === '}') {
+      end = i;
+    }
+  }
+  return result;
+}
+
+
+let configStr = getRoutesConfig(a);
+
+
+let routesConfig = eval('(' + configStr + ')');
+
+
+
+console.log('routesConfig', routesConfig);
+console.log(Object.prototype.toString.call(routesConfig));
+
+
+
+
+
+function getTenantListFn(count = 10) {
   return Mock.mock({
     ...defaultResult,
     [`data|${count}`]: [
@@ -10,11 +53,12 @@ function getTenantList(count = 10) {
         'userCount|+1': 0,
         'updateTime': '2019-07-31 11:28:11'
       }
-    ]
+    ],
+    totalNum:/\d{1,}/,
   });
 }
 
-function getLogin() {
+function getLoginFn() {
   return Mock.mock({
     ...defaultResult,
     data:{ 
@@ -46,7 +90,7 @@ function getLogin() {
                   parentId: 10401,
                   rootId: 104,
                   type: 'menu',
-                  url: '/main/tenantList',
+                  url: routesConfig.tenant,
                 },
                 children: [
                   {
@@ -206,19 +250,15 @@ function getLogin() {
   })
 }
 module.exports = {
-  ['/tenantList'](req, res) {
-    const query = req.query;
-    let count = 10;
-    if (query && query.count) {
-      count = query.count;
-    }
+  ['post /getTenantList'](req, res) {
+    let count = req.query && req.query.count || 10;
     setTimeout(() => {
-      res.json(getTenantList(count))
+      res.json(getTenantListFn(count))
     }, 400);
   },
-  ['/login'](req, res) {
+  ['post /getLogin'](req, res) {
     setTimeout(() => {
-      res.json(getLogin())
+      res.json(getLoginFn())
     }, 400);
   },
 }
