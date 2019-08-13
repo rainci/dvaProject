@@ -13,7 +13,8 @@ import { Form, Input, Row, Col, Button, } from 'antd';
 const FormItem = Form.Item;
 
 const SearchCom = (props) => {
-    let { form, searchNames, emptyFlag } = props
+    let { form, searchNames, emptyFlag, getFieldDecorator } = props;
+
     const _onSearch = (e, fnName) => {//搜索
         e && e.preventDefault();
         form.validateFields((err, filter) => {
