@@ -100,7 +100,7 @@ function getLoginFn() {
                       parentId: 1040101,
                       rootId: 104,
                       type: "page",
-                      url: "/main/addUser",
+                      url: routesConfig.addTenantUrl,
                     },
                     children: [
                       {

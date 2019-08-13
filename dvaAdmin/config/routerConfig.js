@@ -1,3 +1,4 @@
 export const routesConfig = {
-  tenant : '/tenantList'
+  tenant : '/tenantList',
+  addTenantUrl:'/addTenants',
 }
