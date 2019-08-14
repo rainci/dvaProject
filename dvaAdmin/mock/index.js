@@ -39,10 +39,6 @@ let routesConfig = eval('(' + configStr + ')');
 console.log('routesConfig', routesConfig);
 console.log(Object.prototype.toString.call(routesConfig));
 
-
-
-
-
 function getTenantListFn(count = 10) {
   return Mock.mock({
     ...defaultResult,
@@ -249,6 +245,19 @@ function getLoginFn() {
     }
   })
 }
+function getTreeListFn(count = 10) {
+  return Mock.mock({
+    ...defaultResult,
+    [`result|${count}`]: [
+      {
+        'tagId|+1': 1,
+        'name': '@name',
+        'type': /^(human|label|place){1}$/,
+      }
+    ],
+    totalNum:/\d{1,}/,
+  });
+}
 module.exports = {
   ['post /getTenantList'](req, res) {
     let count = req.query && req.query.count || 10;
@@ -261,4 +270,9 @@ module.exports = {
       res.json(getLoginFn())
     }, 400);
   },
+  ['/service/data/tag/tree/list'](req, res) {
+    setTimeout(() => {
+      res.json(getTreeListFn())
+    }, 400);
+  }
 }

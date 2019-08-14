@@ -18,7 +18,7 @@ app.use(createLoading());//add loading
 // 3. Model
 app.model(require('./models/loginPage').default);//登录页
 app.model(require('./models/tenantPage').default);//租户列表页
-
+app.model(require('./models/addTenantPage').default);//增加租户页
 
 // 4. Router
 app.router(require('./router').default);

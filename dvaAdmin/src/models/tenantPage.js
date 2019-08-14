@@ -4,7 +4,7 @@ import * as server from '../services/server';
 // import queryString from 'query-string';//url参数
 // import { setList, avoidData, dealMenuData } from '../utils'
 export default {
-    namespace: 'tenantPage',
+    namespace: 'tenantPageModal',
     state: {},
     reducers: {
         setTenantList(state,{ payload }){

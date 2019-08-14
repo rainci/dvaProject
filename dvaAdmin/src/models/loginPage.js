@@ -5,7 +5,7 @@ import queryString from 'query-string';//url参数
 import { setList, avoidData, dealMenuData } from '../utils'
 
 export default {
-	namespace: 'loginPage',
+	namespace: 'loginPageModal',
 	state: {},
 	reducers: {
 		login(state, { payload = {} }) {
@@ -28,7 +28,7 @@ export default {
 					const subTree = dealMenuData(fnTree);
 					setList('subNav', subTree)//设置sessionStorge subNav
 					yield put({ type: 'login', payload })//put同步
-					yield select(({ loginPage: { userName, token } } = { loginPage: {} }) => {//从state中取值
+					yield select(({ loginPageModal: { userName, token } } = { loginPageModal: {} }) => {//从state中取值
 						setList('userInfo', { userName, token }) //设置sessionStorge userInfo
 					});
 					// yield put( routerRedux.push('/main') ); // 路由跳转

@@ -109,7 +109,7 @@ class AddTenant extends PureComponent {
     }
     treeCheckedFn = (selectedRowKeys, selectedRows) => {//标签树checkbox选择回调
         let { tagType } = this.state
-        this.props[`on${tagType}CheckedFn`] && this.props[`on${tagType}CheckedFn`](selectedRows, selectedRowKeys)
+        // this.props[`on${tagType}CheckedFn`] && this.props[`on${tagType}CheckedFn`](selectedRows, selectedRowKeys)
     }
     treeDeleteFn = ({ tagId, type }) => {//页面上删除按钮
         let tagType = type.charAt(0).toUpperCase() + type.substr(1)
@@ -119,19 +119,24 @@ class AddTenant extends PureComponent {
         this[`${type}KeyAndData`] = { typeData: this.props.addTenantPageReducer[typeData], typeKey: this.props.addTenantPageReducer[typeKey] };
         console.log(555, type, typeData, typeKey, this.props.addTenantPageReducer[typeData], this.props.addTenantPageReducer[typeKey])
     }
-    chooseTreeFn = type => {//选择标签树按钮
-        let tagType = type.charAt(0).toUpperCase() + type.substr(1)
+    _chooseTreeFn = (type,page) => {//选择标签树按钮
         this.setStateValueFn('treeVisible', true)
-        this.setStateValueFn('tagType', tagType)
-        this.getTreeListDataFn({ type })
-        let { treeCodeMap } = this.state
-        if(treeCodeMap && Object.keys(treeCodeMap).length)return;
-        this.getTreeCodeFn()//获取code map
+        this.setStateValueFn('tagType', type)
+        if(this.props[`${type}ListData`].length) return;
+        this.props.dispatch({type:'addTenantPageModal/fetchTreeList',payload:{type,page}})
+
+        // this.getTreeListDataFn({ type })
+        // let { treeCodeMap } = this.state
+        // if(treeCodeMap && Object.keys(treeCodeMap).length)return;
+        // this.getTreeCodeFn()//获取code map
+    }
+    _onPageChange = current => {
+
     }
     cancelTreeModalFn = () => {//tree取消按钮
         this.setStateValueFn('treeVisible', false)
         let { tagType } = this.state
-        this.props[`onCancel${tagType}ModalFn`] && this.props[`onCancel${tagType}ModalFn`](this[`${tagType}KeyAndData`])
+        // this.props[`onCancel${tagType}ModalFn`] && this.props[`onCancel${tagType}ModalFn`](this[`${tagType}KeyAndData`])
     }
     okTreeModalFn = () => {//tree确定按钮
         let { tagType } = this.state;
@@ -284,8 +289,9 @@ class AddTenant extends PureComponent {
                 render: type => (treeCodeMap && treeCodeMap[type]) ? treeCodeMap[type] : type
             }
         ];
+        let { placeListData, } = this.props;
         return (
-            <div className='tenantBox'>
+            <div className={styles.tenantBox}>
                 <BreadCrumbs name={this.state.tenantModifyFlag ? '编辑租户':'新建租户'} rootName='帐号中心' />
                 <Form  >
                     <FormItem label='租户名称' {...formItemLayout}>
@@ -299,17 +305,17 @@ class AddTenant extends PureComponent {
                             <Input placeholder="租户名称" />
                         )}
                     </FormItem>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2} style={{ textAlign: 'right' }}>关联内容：</Col>
                         <Col>
                             <span>地点标签树（最多选择一个）</span>
                             <Checkbox disabled checked>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
-                            <Button type="primary" size='small' onClick={() => this.chooseTreeFn('place')}>选择内容</Button>
+                            <Button type="primary" size='small' onClick={() => this._chooseTreeFn('place')}>选择内容</Button>
                         </Col>
                     </Row>
                     {/* {
@@ -329,17 +335,17 @@ class AddTenant extends PureComponent {
                             </div>
                             : null
                     } */}
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>人名标签树（最多选择一个）</span>
                             <Checkbox disabled checked>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
-                            <Button type="primary" size='small' onClick={() => this.chooseTreeFn('human')}>选择内容</Button>
+                            <Button type="primary" size='small' onClick={() => this._chooseTreeFn('human')}>选择内容</Button>
                         </Col>
                     </Row>
                     {/* {
@@ -359,43 +365,43 @@ class AddTenant extends PureComponent {
                             </div>
                             : null
                     } */}
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>数据来源（可多选）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>网站来源（可多选）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>舆情标签树（最多选择一个）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
-                            <Button type="primary" size='small' onClick={() => this.chooseTreeFn('label')}>选择内容</Button>
+                            <Button type="primary" size='small' onClick={() => this._chooseTreeFn('label')}>选择内容</Button>
                         </Col>
                     </Row>
                     {/* {
@@ -415,53 +421,53 @@ class AddTenant extends PureComponent {
                             </div>
                             : null
                     } */}
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>场景标签树（最多选择一个）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>身份标签树（最多选择一个）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>物体标签树（最多选择一个）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <span>其他标签树（可多选）</span>
                             <Checkbox disabled>是否作为数据权限过滤</Checkbox>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className={styles.antRow}>
                         <Col span={2}></Col>
                         <Col>
                             <Button type="primary" size='small' disabled>选择内容</Button>
@@ -492,29 +498,27 @@ class AddTenant extends PureComponent {
                     onCancel={this.cancelTreeModalFn}
                 >
                     {/* <UserSearch searchNames={searchTreeNames} onSearchFn={this.searchTreeFn}  /> */}
-                    <Spin spinning={getTreeLoad} >
-                        {console.log(1, `${tagType && tagType.toLowerCase()}CheckedKeys`, this.props.addTenantPageReducer[`${tagType && tagType.toLowerCase()}CheckedKeys`])}
                         <TableList
-                            resourceData={this.state.treeData}
+                            resourceData={this.props[`${tagType}ListData`]}
                             columnsUser={columnsTree}
                             emptyText={'暂无信息'}
-                            pageChangeFn={this.dataSetPageFn}
+                            pageChangeFn={this._onPageChange}
                             total={this.state.dataSetTotalNum}
                             current={this.state.dataSetCurrent}
                             isRowSelection={true}
-                            selectedRowKeys={this.props.addTenantPageReducer[`${tagType && tagType.toLowerCase()}CheckedKeys`]}
+                            // selectedRowKeys={this.props.addTenantPageReducer[`${tagType && tagType.toLowerCase()}CheckedKeys`]}
                             onCheckFn={this.treeCheckedFn}
                         />
                         <p style={{ color: 'red', textAlign: 'right' }}>*仅可以选择1个标签树</p>
-                    </Spin>
                 </Modal>
             </div>
         )
     }
 }
-const mapStateToProps = ({ addTenantPageReducer }) => ({
-    addTenantPageReducer,
+const mapStateToProps = ({ addTenantPageModal, loading }) => ({
+    loading,
+    ...addTenantPageModal,
 })
 
-export default Form.create()(AddTenant)
-// export default connect(mapStateToProps)(Form.create()(AddTenant))
+// export default Form.create()(AddTenant)
+export default connect(mapStateToProps)(Form.create()(AddTenant))

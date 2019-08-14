@@ -27,7 +27,7 @@ class LoginPage extends React.PureComponent {
 				let { userName, password } = values;
 				if (userName === 'xixi' && password === '111111') {
 					this.props.dispatch({
-						type: 'loginPage/fetchLogin',
+						type: 'loginPageModal/fetchLogin',
 						payload: { userName, password }
 					})
 						.then((isSuccess) => {
@@ -102,9 +102,9 @@ class LoginPage extends React.PureComponent {
 		)
 	}
 }
-const mapStateToProps = ({ loginPage, loading }) => {
-	const { userName, token } = loginPage;
-	console.log(111, loginPage, userName, token)
+const mapStateToProps = ({ loginPageModal, loading }) => {
+	const { userName, token } = loginPageModal;
+	console.log(111, loginPageModal, userName, token)
 	return {
 		loading,
 		userName,

@@ -12,6 +12,7 @@
     "dva": "^2.4.1",
     "dva-loading": "^3.0.6",
     "fs": "^0.0.1-security",
+    "immer": "^3.2.0",
     "mockjs": "^1.0.1-beta3",
     "mockjs-server-cli": "^1.2.0",
     "path": "^0.12.7",

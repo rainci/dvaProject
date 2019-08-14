@@ -36,7 +36,7 @@ class TenantList extends PureComponent {
     /***********公共方法 end *****************/
     /***************************页面业务逻辑 begin ******************************/
     searchTenantListBtn = (filter, page) => {
-        this.props.dispatch({type:'tenantPage/fetchTenantList',payload:{filter,page}})
+        this.props.dispatch({type:'tenantPageModal/fetchTenantList',payload:{filter,page}})
     }
     searchTenantFn = e => {//搜索
         e && e.preventDefault()
@@ -106,7 +106,7 @@ class TenantList extends PureComponent {
         ];
         return (
             <div>
-                <BreadCrumbs goUrl='/main/addTenants' goName='新建租户' name='租户管理' rootName='账号中心' />
+                <BreadCrumbs goUrl='/addTenants' goName='新建租户' name='租户管理' rootName='账号中心' />
                 <Form onSubmit={this.searchTenantFn} >
                     <Row>
                         <Col span={10} style={{ padding: "0 8px" }}>
@@ -152,12 +152,9 @@ class TenantList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({ tenantPage, loading }) => {
-    // console.log(111,tenantPage )
-    return {
-        loading,
-        ...tenantPage,
-    };
-}
+const mapStateToProps = ({ tenantPageModal, loading }) => ({
+    loading,
+    ...tenantPageModal,
+})
 export default connect(mapStateToProps)(Form.create()(TenantList));
 // export default Form.create()(TenantList)
