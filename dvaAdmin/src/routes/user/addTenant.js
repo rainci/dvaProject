@@ -369,7 +369,7 @@ class AddTenant extends PureComponent {
                         <Col span={2}></Col>
                         <Col>
                             <span>数据来源（可多选）</span>
-                            <Checkbox disabled>是否作为数据权限过滤</Checkbox>
+                            <Checkbox disabled>是否作为数据权限过滤 </Checkbox>
                         </Col>
                     </Row>
                     <Row className={styles.antRow}>
