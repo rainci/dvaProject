@@ -33,7 +33,6 @@ class AddTenant extends PureComponent {
             tenantListPage: 0,//列表总数
             tenantFliter: {},//filter
             treeVisible: false,//model显隐
-            getTreeLoad: false,//tree 加载loading
         }
     }
     /***********公共方法 begin *****************/
@@ -48,10 +47,6 @@ class AddTenant extends PureComponent {
     treeCheckedFn = (key, data) => {//标签树checkbox选择回调
         let { tagType:type } = this.state
         this.props.dispatch({type: 'addTenantPageModal/checkedTree', payload: { type, key, data }})
-    }
-    treeDeleteFn = ({ tagId, type }) => {//页面上删除按钮
-        let tagType = type.charAt(0).toUpperCase() + type.substr(1)
-        this.props[`on${tagType}DeleteFn`] && this.props[`on${tagType}DeleteFn`](tagId)
     }
     searchTreeFn = ({filter={},page,type}) => {//tree search 按钮
         this.props.dispatch({type:'addTenantPageModal/fetchTreeList',payload:{...filter,type:(type||this.state.tagType),page}})        
@@ -79,6 +74,10 @@ class AddTenant extends PureComponent {
         }    
         this.setStateValueFn('treeVisible', false)
         this[`${tagType}KeyAndData`] = {data: this.props[typeData], key: this.props[typeKey]}//弹框点击确定按钮时，保存一下数据，为了当点击取消按钮时，找到上次保存的源数据
+    }
+    treeDeleteFn = ({ tagId, type }) => {//页面上删除按钮
+        let tagType = type.charAt(0).toUpperCase() + type.substr(1)
+        this.props[`on${tagType}DeleteFn`] && this.props[`on${tagType}DeleteFn`](tagId)
     }
     /***************tree 业务 end **************/
     dealSampleDataFn = (data = []) => { //将有多属性的data列表处理成简单属性的data列表  
@@ -174,7 +173,7 @@ class AddTenant extends PureComponent {
     /***************************生命周期 end *******************************/
     render() {
         const { getFieldDecorator } = this.props.form;
-        let { treeVisible, getTreeLoad, tagType, treeCodeMap } = this.state;
+        let { treeVisible, tagType, treeCodeMap } = this.state;
         const columnsTagTree = [
             {
                 title: '标签树名称',
@@ -208,7 +207,6 @@ class AddTenant extends PureComponent {
                 render: type => (treeCodeMap && treeCodeMap[type]) ? treeCodeMap[type] : type
             }
         ];
-        let { placeListData, } = this.props;
         return (
             <div className={styles.tenantBox}>
                 <BreadCrumbs name={this.state.tenantModifyFlag ? '编辑租户':'新建租户'} rootName='帐号中心' />

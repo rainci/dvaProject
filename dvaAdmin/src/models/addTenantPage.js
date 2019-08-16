@@ -42,7 +42,8 @@ export default {
             let { data, key, type } = payload;
             draft[`${type}CheckedData`] = data;
             draft[`${type}CheckedKeys`] = key;    
-        })
+        }),
+        
     },
     effects: {
         *fetchTreeList({ payload:{ type,page,name}}, { call, put }){
