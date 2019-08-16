@@ -1,5 +1,6 @@
 import * as server from '../services/server';
 import produce from 'immer';
+import { uniqueArray, getArrayKeyIndex } from '../utils'
 // import { message } from 'antd';
 // import { routerRedux } from 'dva/router';//路由跳转
 // import queryString from 'query-string';//url参数
@@ -20,17 +21,35 @@ export default {
     state: defaultState,
     reducers: {
         setTreeList: (state,{ payload }) => produce(state, draft => {
-            let { result, totalNum, type } = payload;
+            let { result, totalNum, type, page } = payload;
             draft[`${type}ListData`] = result;
-            draft[`${type}ListDataTotal`] = totalNum;  
+            draft[`${type}ListDataTotal`] = totalNum; 
+            draft[`${type}ListDataCurrent`] = page; 
+        }),
+        checkedTree: (state,{ payload }) => produce(state, draft => {
+            let { type, key, data } = payload;
+            draft[`${type}CheckedKeys`] = key;
+            if (key.length !== data.length) {
+                draft[`${type}CheckedData`] = uniqueArray([...draft[`${type}CheckedData`], ...data], 'tagId')
+                if (draft[`${type}CheckedData`].length !== draft[`${type}CheckedKeys`]) {
+                    draft[`${type}CheckedData`] = draft[`${type}CheckedData`].filter(({tagId}) => draft[`${type}CheckedKeys`].includes(`${tagId}`))
+                }
+            } else {
+                draft[`${type}CheckedData`] = data;
+            }
+        }),
+        cancelTree: (state,{ payload }) => produce(state, draft => {
+            let { data, key, type } = payload;
+            draft[`${type}CheckedData`] = data;
+            draft[`${type}CheckedKeys`] = key;    
         })
     },
     effects: {
-        *fetchTreeList({ payload:{ type,page}}, { call, put }){
-            const {data:{code,result,totalNum}} = yield call(server.treeListFn, {filter:{type,page}})//call异步
+        *fetchTreeList({ payload:{ type,page,name}}, { call, put }){
+            const {data:{code,result,totalNum}} = yield call(server.treeListFn, {filter:{type,page,name}})//call异步
             console.log('result234:',result)
             if(code === 200){
-                yield put({type:'setTreeList',payload:{result, totalNum, type}})//同步
+                yield put({type:'setTreeList',payload:{result, totalNum, type, page}})//同步
             }
         }
     },

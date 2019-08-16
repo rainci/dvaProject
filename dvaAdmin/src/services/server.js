@@ -14,9 +14,8 @@ export function tenantListFn({filter,page=1}){
         body: JSON.stringify({...filter,page,row:10}),
     })
 }
-export function treeListFn({filter,page=1}){
-    return request(`${api}/service/data/tag/tree/list`,{
+export function treeListFn({filter:{name,type,page=1}}){
+    return request(`${api}/service/data/tag/tree/list?name=${name}&type=${type}&page=${page}&row=${10}`,{
         method: 'GET',
-        data: {...filter,page,row:10},
     })
 }

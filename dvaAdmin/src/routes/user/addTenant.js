@@ -2,12 +2,12 @@
  * @author rainci
  */
 import React, { PureComponent } from "react";
-import { Form, Input, Row, Col, Button, message, Checkbox, Modal, Spin, Table } from 'antd';
+import { Form, Input, Row, Col, Button, message, Checkbox, Modal, } from 'antd';
 import { connect } from 'dva'
 import BreadCrumbs from '../../components/breadCrumb'
 
 import TableList from '../../components/tableList'
-import Search from '../../components/search'
+// import SearchCom from '../../components/search'
 import styles from './css/tenant.less'
 
 const FormItem = Form.Item;
@@ -21,9 +21,9 @@ export const formItemLayout = {
         sm: { span: 10 },
     },
 };
-const searchTreeNames = [
-    { 'name': '标签树名称', 'value': 'name', 'num': 8 },
-];
+// const searchTreeNames = [
+//     { 'name': '标签树名称', 'value': 'name', 'num': 8 },
+// ];
 
 class AddTenant extends PureComponent {
     constructor(props) {
@@ -42,124 +42,43 @@ class AddTenant extends PureComponent {
             [key]: value
         })
     }
-    // getTreeData = ({ filter, page, type }) => {//获取tree data
-    //     return serverLogin.getTreeList({ filter, page, type }).then(({ code, data = [], msg }) => {
-    //         if (code === '200' || code === 200) {
-    //             return data;
-    //         } else {
-    //             message.warn(`获取列表失败:${msg}`)
-    //         }
-    //     }).catch((err) => {
-    //         console.log('获取失败:', err)
-    //     })
-    // }
-    // addTenantData = (filter) => {//创建租户
-    //     return serverLogin.getAddTenantData(filter).then(({ code, data = {}, msg }) => {
-    //         if (code === '200' || code === 200) {
-    //             return code;
-    //         } else {
-    //             message.warn(`创建租户失败:${msg}`)
-    //         }
-    //     }).catch((err) => {
-    //         console.log('创建租户失败:', err)
-    //     })
-    // }
-    // updateTenantData = filter => {//更新租户
-    //     return serverLogin.getUpdateTenantData(filter).then(({ code, data = {}, msg }) => {
-    //         if (code === '200' || code === 200) {
-    //             return code;
-    //         } else {
-    //             message.warn(`更新租户失败:${msg}`)
-    //         }
-    //     }).catch((err) => {
-    //         console.log('更新租户失败:', err)
-    //     })
-    // }
-    // getTenantIdDetailData = tenantId => {//获取此tenantId的详情值
-    //     return serverLogin.getTenantIdDetail(tenantId).then(({ code, data = {}, msg }) => {
-    //         if (code === '200' || code === 200) {
-    //             return data;
-    //         } else {
-    //             message.warn(`获取租户信息失败:${msg}`)
-    //         }
-    //     }).catch(err => {
-    //         console.log('租户信息失败:', err)
-    //     })
-    // }
-    // getTreeCodeMap = type => {//获取tree map
-    //     return server.getCodeMap(type).then(({code, data = {}, msg})=>{
-    //         if(code === ('200' || 200)){
-    //             return data
-    //         }else{
-    //             message.warn(`获取tree码表失败:${msg}`)
-    //         }
-    //     }).catch((err)=>{
-    //         console.log(err)
-    //     })
-    // }
     /***********公共方法 end *****************/
     /***************************页面业务逻辑 begin ******************************/
     /***************tree 业务 begin **************/
-    getTreeListDataFn = ({ filter, page, type }) => {//获取标签树业务逻辑
-        this.setStateValueFn('getTreeLoad', true)
-        this.getTreeData({ filter, page, type }).then((data = []) => {
-            this.setStateValueFn('getTreeLoad', false)
-            this.setStateValueFn('treeData', data)
-        })
-    }
-    treeCheckedFn = (selectedRowKeys, selectedRows) => {//标签树checkbox选择回调
-        let { tagType } = this.state
-        // this.props[`on${tagType}CheckedFn`] && this.props[`on${tagType}CheckedFn`](selectedRows, selectedRowKeys)
+    treeCheckedFn = (key, data) => {//标签树checkbox选择回调
+        let { tagType:type } = this.state
+        this.props.dispatch({type: 'addTenantPageModal/checkedTree', payload: { type, key, data }})
     }
     treeDeleteFn = ({ tagId, type }) => {//页面上删除按钮
         let tagType = type.charAt(0).toUpperCase() + type.substr(1)
         this.props[`on${tagType}DeleteFn`] && this.props[`on${tagType}DeleteFn`](tagId)
     }
-    setTreeKeyAndDataFn = ({typeData, typeKey, type}) => {//弹框点击确定按钮时，保存一下数据，为了当点击取消按钮时，找到上次保存的源数据
-        this[`${type}KeyAndData`] = { typeData: this.props.addTenantPageReducer[typeData], typeKey: this.props.addTenantPageReducer[typeKey] };
-        console.log(555, type, typeData, typeKey, this.props.addTenantPageReducer[typeData], this.props.addTenantPageReducer[typeKey])
+    searchTreeFn = ({filter={},page,type}) => {//tree search 按钮
+        this.props.dispatch({type:'addTenantPageModal/fetchTreeList',payload:{...filter,type:(type||this.state.tagType),page}})        
     }
-    _chooseTreeFn = (type,page) => {//选择标签树按钮
+    _chooseTreeFn = type => {//选择标签树按钮
         this.setStateValueFn('treeVisible', true)
         this.setStateValueFn('tagType', type)
         if(this.props[`${type}ListData`].length) return;
-        this.props.dispatch({type:'addTenantPageModal/fetchTreeList',payload:{type,page}})
-
-        // this.getTreeListDataFn({ type })
-        // let { treeCodeMap } = this.state
-        // if(treeCodeMap && Object.keys(treeCodeMap).length)return;
-        // this.getTreeCodeFn()//获取code map
+        this.searchTreeFn({type})
     }
-    _onPageChange = current => {
-
+    _onPageChange = page => {//分页
+        this.searchTreeFn({page})
     }
     cancelTreeModalFn = () => {//tree取消按钮
         this.setStateValueFn('treeVisible', false)
-        let { tagType } = this.state
-        // this.props[`onCancel${tagType}ModalFn`] && this.props[`onCancel${tagType}ModalFn`](this[`${tagType}KeyAndData`])
+        let { tagType: type } = this.state
+        this.props.dispatch({ type: 'addTenantPageModal/cancelTree', payload: { type, ...this[`${type}KeyAndData`]} })
     }
     okTreeModalFn = () => {//tree确定按钮
-        let { tagType } = this.state;
-        let type = tagType.toLowerCase(),
-            typeData = `${type}CheckedData`,
-            typeKey = `${type}CheckedKeys`;
-        if(this.props.addTenantPageReducer[typeKey].length > 1) {
+        let { tagType } = this.state,
+            typeData = `${tagType}CheckedData`,
+            typeKey = `${tagType}CheckedKeys`;
+        if(this.props[typeKey].length > 1) {
             return message.warn('仅可以选择1个标签树')
         }    
         this.setStateValueFn('treeVisible', false)
-        this.setTreeKeyAndDataFn({typeData, typeKey, type})
-
-    }
-    searchTreeFn = filter => {//tree search 按钮
-        let type = this.state.tagType.toLowerCase()
-        this.getTreeListDataFn({filter,type})
-
-    }
-    getTreeCodeFn = () => {//获取tree codeMap
-        this.getTreeCodeMap('tag_tree')
-        .then( data => {
-            this.setStateValueFn('treeCodeMap', data)
-        })
+        this[`${tagType}KeyAndData`] = {data: this.props[typeData], key: this.props[typeKey]}//弹框点击确定按钮时，保存一下数据，为了当点击取消按钮时，找到上次保存的源数据
     }
     /***************tree 业务 end **************/
     dealSampleDataFn = (data = []) => { //将有多属性的data列表处理成简单属性的data列表  
@@ -489,7 +408,7 @@ class AddTenant extends PureComponent {
                     </FormItem>
                 </Form>
                 <Modal
-                    // title='选择数据集'
+                    title={tagType}
                     cancelText='取消'
                     okText='确定'
                     visible={treeVisible}
@@ -497,16 +416,16 @@ class AddTenant extends PureComponent {
                     onOk={this.okTreeModalFn}
                     onCancel={this.cancelTreeModalFn}
                 >
-                    {/* <UserSearch searchNames={searchTreeNames} onSearchFn={this.searchTreeFn}  /> */}
+                        {/* <SearchCom searchNames={searchTreeNames} onSearch={this.searchTreeFn}  /> */}
                         <TableList
                             resourceData={this.props[`${tagType}ListData`]}
                             columnsUser={columnsTree}
                             emptyText={'暂无信息'}
                             pageChangeFn={this._onPageChange}
-                            total={this.state.dataSetTotalNum}
-                            current={this.state.dataSetCurrent}
+                            total={this.props[`${tagType}ListDataTotal`]*1}
+                            current={this.props[`${tagType}ListDataCurrent`]}
                             isRowSelection={true}
-                            // selectedRowKeys={this.props.addTenantPageReducer[`${tagType && tagType.toLowerCase()}CheckedKeys`]}
+                            selectedRowKeys={this.props[`${tagType}CheckedKeys`]}
                             onCheckFn={this.treeCheckedFn}
                         />
                         <p style={{ color: 'red', textAlign: 'right' }}>*仅可以选择1个标签树</p>

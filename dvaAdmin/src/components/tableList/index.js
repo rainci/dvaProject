@@ -1,6 +1,6 @@
 /**
  * 
- * @param {Array} userListData 数据源 
+ * @param {Array} resourceData 数据源 
  * @param {Array} columnsUser 表头 
  * @param {Array} selectedRowKeys 选中的key
  * @param {String} rowKeyName 决定每条key值用哪个字段
@@ -24,7 +24,7 @@ class TableList extends React.Component{
     }
     render(){
         // console.log(this.props)
-        const { resourceData = [], columnsUser, selectedRowKeys, scrollY = 600, emptyText='暂无信息',isRowSelection, total, current, pageSizes, rowKeyName } = this.props;
+        const { resourceData = [], columnsUser, selectedRowKeys = [], scrollY = 600, emptyText='暂无信息',isRowSelection, total, current, pageSizes, rowKeyName } = this.props;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
