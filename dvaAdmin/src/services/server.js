@@ -19,3 +19,9 @@ export function treeListFn({filter:{name,type,page=1}}){
         method: 'GET',
     })
 }
+export function addTenantsFn({filter}){
+    return request(`${api}/tenant/add`,{
+        method: 'POST',
+        body: JSON.stringify(filter),
+    })
+}

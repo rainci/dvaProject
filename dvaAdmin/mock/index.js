@@ -274,5 +274,13 @@ module.exports = {
     setTimeout(() => {
       res.json(getTreeListFn())
     }, 400);
-  }
+  },
+  ['post /tenant/add'](req, res) {
+    setTimeout(() => {
+      res.json(
+        Mock.mock({...defaultResult})
+      )
+    })
+  },
+
 }

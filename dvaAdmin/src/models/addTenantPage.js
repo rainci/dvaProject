@@ -1,8 +1,8 @@
 import * as server from '../services/server';
 import produce from 'immer';
 import { uniqueArray, getArrayKeyIndex } from '../utils'
-// import { message } from 'antd';
-// import { routerRedux } from 'dva/router';//路由跳转
+import { message } from 'antd';
+import { routerRedux } from 'dva/router';//路由跳转
 // import queryString from 'query-string';//url参数
 // import { setList, avoidData, dealMenuData } from '../utils'
 const defaultState = {
@@ -27,7 +27,7 @@ export default {
             draft[`${type}ListDataCurrent`] = page; 
         }),
         checkedTree: (state,{ payload }) => produce(state, draft => {
-            let { type, key, data } = payload;
+            let { type, key=[], data=[] } = payload;
             draft[`${type}CheckedKeys`] = key;
             if (key.length !== data.length) {
                 draft[`${type}CheckedData`] = uniqueArray([...draft[`${type}CheckedData`], ...data], 'tagId')
@@ -39,11 +39,10 @@ export default {
             }
         }),
         cancelTree: (state,{ payload }) => produce(state, draft => {
-            let { data, key, type } = payload;
+            let { data=[], key=[], type } = payload;
             draft[`${type}CheckedData`] = data;
             draft[`${type}CheckedKeys`] = key;    
         }),
-        
     },
     effects: {
         *fetchTreeList({ payload:{ type,page,name}}, { call, put }){
@@ -52,15 +51,27 @@ export default {
             if(code === 200){
                 yield put({type:'setTreeList',payload:{result, totalNum, type, page}})//同步
             }
+        },
+        *fetchAddTenant({ payload }, { call, put }){
+            const { data: {msg, code} } = yield call(server.addTenantsFn, { filter:payload })//call异步
+            const isSuccess = code === 200;
+            if (isSuccess) {
+                message.info('增加成功',1,function *aa(){
+                    yield put( routerRedux.push('/tenantList') ); // 路由跳转
+                })
+            }else {
+                message.warn(msg);
+            }
+            return isSuccess
         }
     },
     subscriptions: {
         setup({ dispatch, history }) {
             history.listen(( {pathname} ) => {
                 console.log(pathname)
-                if(pathname === '/tenantList'){
-                    dispatch({type:'fetchTenantList'})
-                }
+                // if(pathname === '/tenantList'){
+                //     dispatch({type:'fetchTenantList'})
+                // }
             })
 
         },
