@@ -90,7 +90,7 @@ class TenantList extends PureComponent {
                     //console.log(data)
                     return (
                         <div>
-                            <Link to={`${routesConfig.addTenantUrl}?tenantId= ${tenantId}`}>编辑</Link>&nbsp;|&nbsp;
+                            <Link to={`${routesConfig.addTenantUrl}?tenantId=${tenantId}`}>编辑</Link>&nbsp;|&nbsp;
                             <Popconfirm 
                             title="确定要删除租户吗？" 
                             okText="Yes" 

@@ -90,24 +90,8 @@ class AddTenant extends PureComponent {
         if (this.state.tenantModifyFlag) {
             filter.tenantId = this.state.tenantId * 1
             this.props.dispatch({type:'addTenantPageModal/fetchAddTenant', payload: filter })
-            // return this.updateTenantData(filter)
-            //     .then(code => {
-            //         if (code === ('200' || 200)) {
-            //             message.info('更新租户成功', 2, () => {
-            //                 this.props.history.push('/main/tenantList')
-            //             })
-            //         }
-            //     })
         }
         this.props.dispatch({type:'addTenantPageModal/fetchAddTenant', payload: filter })
-        // this.addTenantData(filter)
-        //     .then(code => {
-        //         if (code === ('200' || 200)) {
-        //             message.info('创建租户成功', 2, () => {
-        //                 this.props.history.push('/main/tenantList')
-        //             })
-        //         }
-        //     })
     }
     addTenantFn = e => {//搜索
         e && e.preventDefault()
@@ -156,7 +140,8 @@ class AddTenant extends PureComponent {
             })
     }
     isGetTenantDetailFn = () => { //是否是修改租户并获取租户详情
-        // var tenantId = T.getQueryString('tenantId')
+        var tenantId = this.props.location.search.substring(1)
+        console.log(tenantId)
         // if (tenantId) {
         //     this.getTenantIdDetailFn(tenantId);
         //     this.setState({ tenantModifyFlag: true, tenantId })
@@ -165,10 +150,10 @@ class AddTenant extends PureComponent {
     /***************************页面业务逻辑 end ******************************/
     /***************************生命周期 begin *******************************/
     componentDidMount() {
-        let { onPlaceInitFn, onHumanInitFn, onLabelInitFn } = this.props;
-        onPlaceInitFn && onPlaceInitFn()
-        onHumanInitFn && onHumanInitFn()
-        onLabelInitFn && onLabelInitFn()
+        // let { onPlaceInitFn, onHumanInitFn, onLabelInitFn } = this.props;
+        // onPlaceInitFn && onPlaceInitFn()
+        // onHumanInitFn && onHumanInitFn()
+        // onLabelInitFn && onLabelInitFn()
         this.isGetTenantDetailFn()
     }
     /***************************生命周期 end *******************************/

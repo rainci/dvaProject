@@ -56,9 +56,9 @@ export default {
             const { data: {msg, code} } = yield call(server.addTenantsFn, { filter:payload })//call异步
             const isSuccess = code === 200;
             if (isSuccess) {
-                message.info('增加成功',1,function *aa(){
-                    yield put( routerRedux.push('/tenantList') ); // 路由跳转
-                })
+                message.info('创建租户成功',1)
+                yield put( routerRedux.push('/tenantList') ); // 路由跳转
+
             }else {
                 message.warn(msg);
             }
