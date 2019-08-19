@@ -9,7 +9,7 @@ import BreadCrumbs from '../../components/breadCrumb'
 import TableList from '../../components/tableList'
 // import SearchCom from '../../components/search'
 import styles from './css/tenant.less'
-
+import { getParams } from '../../utils'
 const FormItem = Form.Item;
 export const formItemLayout = {
     labelCol: {
@@ -87,11 +87,12 @@ class AddTenant extends PureComponent {
         });
     }
     addTenantBtnFn = (filter) => {//创建租户后逻辑
-        if (this.state.tenantModifyFlag) {
-            filter.tenantId = this.state.tenantId * 1
-            this.props.dispatch({type:'addTenantPageModal/fetchAddTenant', payload: filter })
+        let { tenantModifyFlag, tenantId } = this.state;
+        if (tenantModifyFlag) {
+            filter.tenantId = tenantId * 1
+            this.props.dispatch({ type: 'addTenantPageModal/fetchAddTenant', payload: filter })
         }
-        this.props.dispatch({type:'addTenantPageModal/fetchAddTenant', payload: filter })
+        this.props.dispatch({ type: 'addTenantPageModal/fetchAddTenant', payload: filter })
     }
     addTenantFn = e => {//搜索
         e && e.preventDefault()
@@ -124,14 +125,13 @@ class AddTenant extends PureComponent {
             typeData[type].push({ tagId: dataId, name: dataName, code: dataCode, type })
             typeId[type].push(dataId)
         })
-        Object.keys(typeData).forEach(item => {
-            let type = item.charAt(0).toUpperCase() + item.substr(1)
-            this.props[`on${type}CheckedFn`] && this.props[`on${type}CheckedFn`](typeData[item], typeId[item])
+        Object.keys(typeData).forEach(type => {
+            this.props.dispatch({ type: 'addTenantPageModal/checkedTree', payload: { type, key: typeId[type], data: typeData[type] } })
         })
     }
     getTenantIdDetailFn = tenantId => { //获取详情信息，回显form表单函数
-        let _this = this
-        this.getTenantIdDetailData(tenantId)
+        let _this = this;
+        this.props.dispatch({ type: 'addTenantPageModal/fetchTenantDetail', payload: { tenantId } })
             .then(({ name, tenantDataVoList } = {}) => {
                 this.props.form && this.props.form.setFieldsValue({//form内容回显
                     name,
@@ -140,12 +140,12 @@ class AddTenant extends PureComponent {
             })
     }
     isGetTenantDetailFn = () => { //是否是修改租户并获取租户详情
-        var tenantId = this.props.location.search.substring(1)
-        console.log(tenantId)
-        // if (tenantId) {
-        //     this.getTenantIdDetailFn(tenantId);
-        //     this.setState({ tenantModifyFlag: true, tenantId })
-        // }
+        let tenantId = getParams().tenantId;
+        console.log(11111, tenantId)
+        if (tenantId) {
+            this.getTenantIdDetailFn(tenantId);
+            this.setState({ tenantModifyFlag: true, tenantId })
+        }
     }
     /***************************页面业务逻辑 end ******************************/
     /***************************生命周期 begin *******************************/

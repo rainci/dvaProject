@@ -63,6 +63,10 @@ export default {
                 message.warn(msg);
             }
             return isSuccess
+        },
+        *fetchTenantDetail({ payload } , { call, put }){
+            let { data: { code, msg, data }} = yield call(server.tenantDetailFn, payload)
+            return data
         }
     },
     subscriptions: {

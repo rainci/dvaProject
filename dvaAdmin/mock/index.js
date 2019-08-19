@@ -258,6 +258,25 @@ function getTreeListFn(count = 10) {
     totalNum:/\d{1,}/,
   });
 }
+function getTenantDetailFn() {
+  return Mock.mock({
+    ...defaultResult,
+    data: {
+      name: '@name',
+      tenantId: /\d+/,
+      ['tenantDataVoList|5']: [
+        {
+          'tenantDataId': /\d/,
+          'dataId': /\d/,
+          'type': /^(human|label|place){1}$/,
+          'dataName': '@name',
+        }
+      ]
+    }
+    
+
+  });  
+}
 module.exports = {
   ['post /getTenantList'](req, res) {
     let count = req.query && req.query.count || 10;
@@ -281,6 +300,11 @@ module.exports = {
         Mock.mock({...defaultResult})
       )
     })
+  },
+  ['/service/account/tenant/detail'](req, res) {
+    setTimeout(() => {
+      res.json(getTenantDetailFn())
+    }, 400);
   },
 
 }

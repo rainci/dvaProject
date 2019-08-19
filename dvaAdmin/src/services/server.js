@@ -25,3 +25,8 @@ export function addTenantsFn({filter}){
         body: JSON.stringify(filter),
     })
 }
+export function tenantDetailFn({tenantId}){
+    return request(`${api}/service/account/tenant/detail?tenantId=${tenantId}`,{
+        method: 'GET',   
+    })
+}

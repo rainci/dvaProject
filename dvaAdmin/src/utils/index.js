@@ -18,6 +18,7 @@ import { filterOneData } from './filterOneData'
 import { getUserSession } from './getUserSession'
 import { generateData } from './generateData'
 import { getArrayKeyIndex } from './getArrayKeyIndex'
+import { getParams } from './getParam'
 export {   
     tool,
     timeTransform,//时间转换，将毫秒转换成00:00:00格式
@@ -32,4 +33,5 @@ export {
     getUserSession,//获取用户session信息
     generateData,//将多层级的数据处理成单层级的数据
     getArrayKeyIndex,//获取数组中，某条对象的key值，所在的index
+    getParams,//获取url中的参数
 }
